@@ -15,5 +15,6 @@
             "username": "root",
             "connectionTimeout": 30
         }
-    ]
+    ],
+    "sqltools.results.reuseTabs": "connection"
 }
