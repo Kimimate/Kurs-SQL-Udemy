@@ -4,8 +4,7 @@ USE maven_advanced_sql;
 -- 1. NUMERIC FUNCTIONS
 
 -- Math and rounding functions
-SELECT *
-FROM numbers;
+SELECT * FROM products;
 
 -- Pro tip: FLOOR function for binning
 
