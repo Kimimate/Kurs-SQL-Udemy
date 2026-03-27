@@ -4,34 +4,83 @@ USE maven_advanced_sql;
 -- 1. NUMERIC FUNCTIONS
 
 -- Math and rounding functions
-SELECT * FROM products;
+SELECT  country, population,
+        LOG(population) AS log_pop,
+        ROUND(LOG(population),2) as log_pop_2
+FROM country_stats;
 
 -- Pro tip: FLOOR function for binning
+WITH pm AS (SELECT country,  population,
+            FLOOR(population / 1000000) as pop_m
+            FROM country_stats)
 
+SELECT  pop_m, COUNT(country) AS num_countries
+FROM    pm
+GROUP BY pop_m
+ORDER BY pop_m;
 
 -- Max of a column vs max of a row: Least & greatest
-
 -- Create a miles run table
+/*
+CREATE TABLE miles_run (
+    name VARCHAR(50),
+    q1 INT,
+    q2 INT,
+    q3 INT,
+    q4 INT
+);
+
+INSERT INTO miles_run (name, q1, q2, q3, q4) VALUES
+	('Ali', 100, 200, 150, NULL),
+	('Bolt', 350, 400, 380, 300),
+	('Jordan', 200, 250, 300, 320);
+
+SELECT * FROM miles_run;
+*/
 
 -- Return the greatest value of each column
+SELECT  MAX(q1), MAX(q2), MAX(q3), MAX(q4)
+FROM    miles_run;
 
 -- Return the greatest value of each row
+SELECT  GREATEST(q1,q2,q3,q4) AS most_miles
+FROM    miles_run;
 
 -- Lookahead: Deal with the NULL values
+SELECT  GREATEST(q1,q2,q3, COALESCE(q4, 0)) AS most_miles
+FROM    miles_run;
 
 -- 2. CAST & CONVERT FUNCTIONS
 
 -- Create a sample table
+CREATE TABLE sample_table (
+    id INT,
+    str_value CHAR(50)
+);
 
+INSERT INTO sample_table (id, str_value) VALUES
+	(1, '100.2'),
+	(2, '200.4'),
+	(3, '300.6');
+
+SELECT * FROM sample_table;
 -- Try to do a math calculation on the string column
+SELECT id, str_value*2 
+FROM    sample_table;
 
 -- Turn the string to a decimal
+SELECT id, CAST(str_value AS DECIMAL(5, 2))*2 
+FROM    sample_table;
 
 -- Turn an integer into a float
+SELECT country, population / 5.0
+FROM    country_stats;
 
 -- 3. DATETIME FUNCTIONS
 
+
 -- Get the current date and time
+SELECT CURRENT_DATE(), CURRENT_TIME(), CURRENT_TIMESTAMP();
 
 -- Create a my events table
 CREATE TABLE my_events (
@@ -55,13 +104,40 @@ INSERT INTO my_events (event_name, event_date, event_datetime, event_type, event
 
 SELECT * FROM my_events;
 
+
 -- Extract info about datetime values
+SELECT  event_name, event_date, event_datetime,
+        YEAR(event_date) AS event_year,
+        MONTH(event_date) AS event_month,
+        DAYOFWEEK(event_date) AS event_dow
+FROM my_events;
+
 
 -- Spell out the full days of the week using CASE statements
+WITH dow AS (SELECT  event_name, event_date, event_datetime,
+                    YEAR(event_date) AS event_year,
+                    MONTH(event_date) AS event_month,
+                    DAYOFWEEK(event_date) AS event_dow
+            FROM my_events)
+
+SELECT *, CASE  WHEN event_dow = 1 THEN 'Sunday'
+                WHEN event_dow = 2 THEN 'Monday'
+                WHEN event_dow = 3 THEN 'Tuesday'
+                WHEN event_dow = 4 THEN 'Wenesday'
+                WHEN event_dow = 5 THEN 'Thursday'
+                WHEN event_dow = 6 THEN 'Friday'
+                WHEN event_dow = 7 THEN 'Saturday'
+                ELSE 'Unknown' END AS event_dow_name
+FROM dow;
+
 
 -- Calculate an interval between datetime values
 
+
+
 -- Add / subtract an interval from a datetime value
+
+
 
 -- 4. STRING FUNCTIONS
 
@@ -86,8 +162,21 @@ SELECT * FROM my_events;
 -- Return words with hyphens in them
 
 -- 5. NULL FUNCTIONS
-
 -- Create a contacts table
+CREATE TABLE contacts (
+    name VARCHAR(50),
+    email VARCHAR(100),
+    alt_email VARCHAR(100));
+
+INSERT INTO contacts (name, email, alt_email) VALUES
+	('Anna', 'anna@example.com', NULL),
+	('Bob', NULL, 'bob.alt@example.com'),
+	('Charlie', NULL, NULL),
+	('David', 'david@example.com', 'david.alt@example.com');
+
+SELECT * FROM contacts;
+
+
 -- Return null values
 
 -- Return non-null values

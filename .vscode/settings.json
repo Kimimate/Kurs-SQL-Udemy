@@ -16,5 +16,7 @@
             "connectionTimeout": 30
         }
     ],
-    "sqltools.results.reuseTabs": "connection"
+    "sqltools.results.reuseTabs": "connection",
+    "editor.inlineSuggest.enabled": false,
+    "editor.quickSuggestionsDelay": 10
 }
