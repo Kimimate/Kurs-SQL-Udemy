@@ -132,11 +132,15 @@ FROM dow;
 
 
 -- Calculate an interval between datetime values
-
+SELECT  event_name, event_date, event_datetime, CURRENT_DATE(),
+        DATEDIFF(event_date, CURRENT_DATE()) AS days_until
+FROM my_events;
 
 
 -- Add / subtract an interval from a datetime value
-
+SELECT  event_name, event_date, event_datetime, CURRENT_DATE(),
+        DATE_ADD(event_datetime, INTERVAL 1 HOUR) AS plus_one_hour
+FROM my_events;
 
 
 -- 4. STRING FUNCTIONS

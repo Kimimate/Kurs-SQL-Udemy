@@ -37,13 +37,18 @@ FROM    bin
 GROUP BY total_spend_bin
 ORDER BY total_spend_bin;
 
+
 -- ASSIGNMENT 2: Datetime functions
 
 -- Extract just the orders from Q2 2024
-
-
+SELECT  order_id, order_date
+FROM    orders
+WHERE YEAR(order_date) = 2024 AND MONTH(order_date) BETWEEN 4 AND 6;
 -- Add a column called ship_date that adds 2 days to each order date
-
+SELECT  order_id, order_date,
+        DATE_ADD(order_date, INTERVAL 2 DAY) AS ship_date
+FROM    orders
+WHERE YEAR(order_date) = 2024 AND MONTH(order_date) BETWEEN 4 AND 6;
 
 -- ASSIGNMENT 3: String functions
 
