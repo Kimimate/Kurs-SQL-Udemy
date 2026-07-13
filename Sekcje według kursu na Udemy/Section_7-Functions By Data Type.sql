@@ -230,13 +230,33 @@ SELECT * FROM contacts;
 
 
 -- Return null values
+SELECT *
+FROM contacts
+WHERE email IS NULL;
 
 -- Return non-null values
+SELECT *
+FROM contacts
+WHERE email IS NOT NULL;
 
 -- Return non-NULL values using a CASE statement
-
+SELECT  name, email,
+        CASE WHEN email IS NOT NULL THEN email
+             ELSE 'no email' END AS concact_email 
+FROM    contacts;
 -- Return non-NULL values using IF NULL
+SELECT  name, email,
+        IFNULL (email, 'no email') AS concact_email 
+FROM    contacts;
 
 -- Return an alternative field using IF NULL
+SELECT  name, email, alt_email,
+        IFNULL (email, alt_email) AS concact_email 
+FROM    contacts;
 
 -- Return an alternative field after multiple checks
+SELECT  name, email, alt_email,
+        IFNULL (email, 'no email') AS concact_email_value,
+        IFNULL (email, alt_email) AS concact_email_column,
+        COALESCE(email, alt_email, 'no email') AS concact_email_coalesce
+FROM    contacts;
