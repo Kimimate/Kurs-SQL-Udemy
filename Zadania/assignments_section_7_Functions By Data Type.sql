@@ -53,13 +53,24 @@ WHERE YEAR(order_date) = 2024 AND MONTH(order_date) BETWEEN 4 AND 6;
 -- ASSIGNMENT 3: String functions
 
 -- View the current factory names and product IDs
-
+SELECT  factory, product_id
+FROM    products;
 
 -- Remove apostrophes and replace spaces with hyphens
-
+SELECT  factory, product_id,
+        REPLACE(REPLACE(factory, "'", ""), " ", "-") AS factory_clean
+FROM    products
+ORDER BY factory, product_id;
 
 -- Create new ID column called factory_product_id
+WITH fp AS (SELECT  factory, product_id,
+                    REPLACE(REPLACE(factory, "'", ""), " ", "-") AS factory_clean
+            FROM    products)
 
+SELECT  factory, product_id,
+        CONCAT(factory_clean, "-", product_id) AS factory_product_id
+FROM    fp
+ORDER BY factory, product_id;
 
 -- ASSIGNMENT 4: Pattern matching
 
